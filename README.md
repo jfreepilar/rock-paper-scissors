@@ -8,6 +8,18 @@ Skills on display:
 2. Problem-solving approach - Utilizing a systematic problem-solving approach, I've divided the task into manageable sub-problems.This strategic breakdown facilitates a more straightforward approach highlighting the critical soft skills essential for any programmer.
 
 3. Writing Pseudocode - Ability to write readable and concise Pseudocode at the initial stage of the problem-solving process. This simplifies the code construct and anticipates potential challenges that may arise during the program's development.
+    Pseudocode:
+        GET prompt from the user
+        CALL getComputerChoice
+        CALL rockPaperScissors()
+            IF computerSelection > playerSelection
+                    GIVE 1 point to the computer
+            ELSE IF computerSelection < playerSelection
+                    GIVE 1 point to the user
+            ELSE
+                    REPEAT the round
+            RECORD the result of the round
+        REPEAT the game until someone scores 3 points
 
 4. Syntax - Using correct syntax rules to construct a JavaScript codes. Proper use of integers, strings, and other language elements crucial to the effective implementation of the Rock, Paper, Scissors game.
 
