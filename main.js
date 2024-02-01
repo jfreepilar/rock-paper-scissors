@@ -1,116 +1,143 @@
-//rock paper scissors
+    //rock paper scissors
+    //global variables
+    let player = 0;
+    let computer = 0;
+    let computerSelection;
+    let playerSelection;
+    let roundResult = playRound(playerSelection, computerSelection);
+    const buttons = document.querySelectorAll('.btn');
 
-//algorithm
-//1. ACCESS the values of the buttons and convert to array if possible
-//2. CREATE a function that will return the value of the selected button then include in an event handler
-//3. CALL the play round function everytime a button is clicked
+    //list of functions
+    //generate random input
+    function computerChoice() { 
+        const hand = ["rock", "paper", "scissors"];
+        const randomArr = Math.floor(Math.random()*hand.length);
+        result = hand[randomArr];
+        return result; 
+        }
 
- //generate random input
- function computerChoice() { 
-    const hand = ["rock", "paper", "scissors"];
-    const randomArr = Math.floor(Math.random()*hand.length);
-    result = hand[randomArr];
-    return result; 
+        
+    //compare the input from the user and computer, single round
+    function playRound(playerSelection, computerSelection) {
+        let result = '';
+        if (
+            (playerSelection === "rock" && computerSelection === "scissors") ||
+            (playerSelection === "paper" && computerSelection === "rock") ||
+            (playerSelection === "scissors" && computerSelection === "paper")
+        ) {
+            return "player";
+        } else if (
+            (playerSelection === "scissors" && computerSelection === "rock") ||
+            (playerSelection === "rock" && computerSelection === "paper") ||
+            (playerSelection === "paper" && computerSelection === "scissors")
+        ) {
+            return "computer";
+        }
+        return result;
+    }
+    //function t0 add 1 point to the winenr
+    function addScore(roundResult) {
+    if (roundResult === 'player') {
+            player++;
+        } else if (roundResult === 'computer') {
+            computer++;
+        }
     }
 
-let computerSelection = computerChoice();
-let userSelection;
-
-
-//compare the input from the user and computer, single round
-function playRound(userSelection, computerSelection) {
-    if (
-        (userSelection === "rock" && computerSelection === "scissors") ||
-        (userSelection === "paper" && computerSelection === "rock") ||
-        (userSelection === "scissors" && computerSelection === "paper")
-    ) {
-        return "user";
-    } else if (
-        (userSelection === "scissors" && computerSelection === "rock") ||
-        (userSelection === "rock" && computerSelection === "paper") ||
-        (userSelection === "paper" && computerSelection === "scissors")
-    ) {
-        return "computer";
-    } else {
-        return "zero";
-    }
-}
-
-let user = 0, 
-    computer = 0;
-
-const buttons = document.querySelectorAll('.btn');
-buttons.forEach( function(button) {
-    //function 1 RETURN the value of the clicked button
-    button.addEventListener('click', () => {
-        let userSelection = button.value;
-        console.log(userSelection);
-    
-    //function 2 COMPARE the user's and computer's selection
-    let roundResult = playRound(userSelection, computerSelection);
-    console.log(playRound(userSelection, computerSelection));
-
-    if (roundResult === 'user') {
-        user ++;
-    } else if (roundResult === 'computer') {
-        computer++;
+    //function to add event listener to each button
+    function addClickListener() {
+        buttons.forEach((button) => {
+            button.addEventListener('click', clickHandler);
+        });
     }
 
-    console.log('User score ', user);
-    console.log('Computer score ', computer);
-
-    if (user == 3 ) {
-        setTimeout("alert('You win')", 1000);
-    } else if (computer == 3) {
-        setTimeout("alert('Computer win!')", 5);
+    //function to remove event listener from each button
+    function removeClickListener() {
+        buttons.forEach((button) => {
+            button.removeEventListener('click', clickHandler);
+        });
     }
 
-    document.querySelector('.userScore').innerHTML = 'User: ' + user;
-    document.querySelector('.computerScore').innerHTML = 'Computer: ' + computer;
-    })  
-});
+    //function to display the winner and to remove the event listener when someone wins
+    function displayWinner() {
+        if (player === 3) {
+            winner.innerText = 'Player wins! 😃';
+            removeClickListener(); //remove event listener if the user wins
+        } else if (computer === 3) {
+            winner.innerText = 'Computer wins! 😝';
+            removeClickListener(); //remove event listener if the computer wins
+        }
+    }
+        
+    //define the event listener function
+    const clickHandler = (event) => {
+        playerSelection = event.target.value; console.log('Player: ' + playerSelection)
+        computerSelection = computerChoice(); console.log('Computer: ' + computerSelection)
+        let roundResult = playRound(playerSelection, computerSelection); console.log('Result: ' + roundResult)
+        addScore(roundResult);
+        displayWinner();
+        playerScore.innerText = 'Player: ' + player;
+        computerScore.innerText = 'Computer: ' + computer;
+    }
 
+    addClickListener(); //invoke the function
 
+    //element for reset button
+    let resetBtn = document.createElement('button');
+    resetBtn.textContent = 'Reset'; // Set the button text
 
+    resetBtn.addEventListener('click', () => {
+            document.location.reload();
+    });
 
-//div for score
-let body = document.querySelector('body');
-let scores = document.createElement('div');
-scores.classList.add('scores');
-scores.style.display = 'flex';
-scores.style.gap = '30px'
-scores.style.marginTop = '30px';
-body.appendChild(scores);
+    //element for score
+    let body = document.querySelector('body');
+    let scores = document.createElement('div');
+    scores.classList.add('scores');
+    scores.style.display = 'flex';
+    scores.style.gap = '30px'
+    scores.style.marginTop = '30px';
+    body.appendChild(scores);
 
-//div for user's score
-let userScore = document.createElement('div');
-userScore.classList.add('userScore');
-userScore.style.height = '30px';
-userScore.style.width = '80px';
-userScore.style.boxSizing = 'border-box';
-userScore.style.padding = '3px';
-userScore.textContent = 'User: ' + user; 
-userScore.style.border = '2px solid black';
-scores.appendChild(userScore);
+    //element for user's score
+    let playerScore = document.createElement('div');
+    playerScore.classList.add('playerScore');
+    playerScore.style.height = '30px';
+    playerScore.style.width = '80px';
+    playerScore.style.boxSizing = 'border-box';
+    playerScore.style.padding = '3px';
+    playerScore.textContent = 'Player: ' + player; 
+    playerScore.style.border = '1px solid black';
+    playerScore.style.marginTop = '-30px';
+    scores.appendChild(playerScore);
 
-//div for computer's score
-let computerScore = document.createElement('div');
-computerScore.classList.add('computerScore');
-computerScore.style.height = '30px';
-computerScore.style.width = '110px';
-computerScore.style.boxSizing = 'border-box';
-computerScore.style.padding = '3px';
-computerScore.textContent = 'Computer: ' + computer; 
-computerScore.style.border = '2px solid black';
-scores.appendChild(computerScore);
+    //element for computer's score
+    let computerScore = document.createElement('div');
+    computerScore.classList.add('computerScore');
+    computerScore.style.height = '30px';
+    computerScore.style.width = '110px';
+    computerScore.style.boxSizing = 'border-box';
+    computerScore.style.padding = '3px';
+    computerScore.textContent = 'Computer: ' + computer; 
+    computerScore.style.border = '1px solid black';
+    computerScore.style.marginTop = '-30px';
+    scores.appendChild(computerScore);
 
+    //element for winner
+    let winner = document.querySelector('.winner');
+    winner.style.marginTop = '10px';
+    winner.style.border = 'solid 1px white'
+    winner.style.height = '30px'
+    winner.style.fontSize = '20px'
 
+    //style for reset buttons
+    resetBtn.classList.add('.reset-btn');
+    resetBtn.style.height = '30px';
+    resetBtn.style.width = '110px';
+    resetBtn.style.boxSizing = 'border-box';
+    resetBtn.style.padding = '3px';
+    resetBtn.style.marginTop = '-30px';
+    resetBtn.textContent = 'Reset'; 
+    scores.appendChild(resetBtn);
 
-
-
-
-
-
-
-
-
+        
